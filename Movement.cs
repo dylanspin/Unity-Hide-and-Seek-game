@@ -12,7 +12,8 @@ public class Movement : MonoBehaviour
 
     public bool running = false;
     private bool crouching = false;
-
+    public bool jumping = false;
+    private bool jumpingAllowed = true;
     public float WalkingSpeed = 12.0f;
     public float RuningSpeed = 14.0f;
     public float crouchingSpeed = 7.0f;
@@ -20,28 +21,77 @@ public class Movement : MonoBehaviour
     public float gravity = -9.81f;
     public float speed = 15.0f;
     private Vector3 velocity;
+    public Bobbing bobbingScript;
+    private bool disable = false;
 
     void Update()
     {
         // if(ismine)
         // {
-            isGrounded = controller.isGrounded;
-            if(isGrounded && velocity.y < 0)
-            {
-                velocity.y = -2f;   
+            if(!disable)
+            {   
+
+                isGrounded = controller.isGrounded;
+                if(isGrounded)
+                {
+                    if(jumping)
+                    {
+                        jumping = false;
+                    }
+                }
+                Jump();
+                if(isGrounded && velocity.y < 0)
+                {
+                    velocity.y = -2f;   
+                }
+
+                float z = Input.GetAxis("Vertical");
+                float x = Input.GetAxis("Horizontal");
+
+                bobbingScript.setValues(x,z);
+                
+                Vector3 move = transform.right * x + transform.forward * z;
+
+                controller.Move(move * speed * Time.deltaTime);//movement
             }
-
-            float z = Input.GetAxis("Vertical");
-            float x = Input.GetAxis("Horizontal");
-
-            
-            Vector3 move = transform.right * x + transform.forward * z;
-
-            controller.Move(move * speed * Time.deltaTime);//movement
 
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);//gravity
+
+            
         // }
     }
+
+    void Jump()
+    {
+        if(!disable)
+        {
+            if(jumpingAllowed && !crouching)
+            {
+                Debug.Log("test");
+                if(!jumping)
+                {
+                    if(Input.GetKeyDown("space"))
+                    {
+                        jumping = true;
+                        isGrounded = false;
+                        BoostUp(jumpHeight);
+                    }
+                }
+            }
+        }
+    }
+    
+    //disables and enables movement for ui
+    public void setMovement(bool active)
+    {
+        disable = active;
+    }
+
+    public void BoostUp(float Height)
+    {
+        velocity.y = Mathf.Sqrt(Height * -2 * gravity);
+    }
+
 }
