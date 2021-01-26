@@ -40,6 +40,7 @@ public class Movement : MonoBehaviour
                     }
                 }
                 Jump();
+                run();
                 if(isGrounded && velocity.y < 0)
                 {
                     velocity.y = -2f;   
@@ -69,7 +70,6 @@ public class Movement : MonoBehaviour
         {
             if(jumpingAllowed && !crouching)
             {
-                Debug.Log("test");
                 if(!jumping)
                 {
                     if(Input.GetKeyDown("space"))
@@ -80,6 +80,21 @@ public class Movement : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+
+    void run()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        {   
+            running = true;
+            speed = RuningSpeed;
+        }
+        if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        {
+            running = false;
+            speed = WalkingSpeed;
         }
     }
     
