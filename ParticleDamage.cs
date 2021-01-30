@@ -7,8 +7,11 @@ public class ParticleDamage : MonoBehaviour
     public int damage = 5;
     void OnParticleCollision(GameObject hitP)
     {    
-        Debug.Log("hit");
         if(hitP.transform.tag == "Player")
+        {
+            hitP.gameObject.GetComponent<Hp>().takeDamage(damage);
+        }
+        if(hitP.transform.tag == "Target")
         {
             hitP.gameObject.GetComponent<Hp>().takeDamage(damage);
         }

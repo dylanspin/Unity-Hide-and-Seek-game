@@ -8,9 +8,13 @@ public class Hp : MonoBehaviour
     public CamShake shakeScript;
     public int hp = 100;
     public int maxHp = 100;
+    private bool player = false;
     void Start()
     {
-        //set values
+        if(this.transform.tag == "Player")
+        {
+            player = true;
+        }
     }
 
     public void takeDamage(int damage)
@@ -18,9 +22,14 @@ public class Hp : MonoBehaviour
         if(damage > hp)
         {   
             this.gameObject.SetActive(false);
-            this.transform.position = SpawnPoint.position;
+            if(player)
+            {
+                if(SpawnPoint)
+                {
+                    this.transform.position = SpawnPoint.position;
+                }   
+            }
             respawn();
-            //dead
         }else{
             hp -= damage;
             StartCoroutine(shakeScript.Shake(0.2f,0.1f));

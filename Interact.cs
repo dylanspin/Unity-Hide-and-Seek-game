@@ -6,7 +6,6 @@ public class Interact : MonoBehaviour
 {
     public Transform fpsCamera;
     public float range = 5.0f;
-
     public LayerMask Mask;
     void Update()
     {
@@ -24,6 +23,7 @@ public class Interact : MonoBehaviour
     {
         if(hit.transform.tag == "Door")
         {   
+            Debug.Log("test");
             hit.transform.GetComponent<DoorTrigger>().checkInteract();   
         }else if(hit.transform.tag == "Button")
         {   
