@@ -30,7 +30,6 @@ public class Movement : MonoBehaviour
         // {
             if(!disable)
             {   
-
                 isGrounded = controller.isGrounded;
                 if(isGrounded)
                 {
